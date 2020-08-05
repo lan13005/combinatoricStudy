@@ -43,7 +43,7 @@ void addUTWeightsBranch(string rootFileLoc, string rootFileName, string treeName
     double UT_spectBestChiWeight;
     double UT_probWeight;
     double UT_spectProbWeight;
-    string spectroscopicID;
+    //string spectroscopicID;
     int UT_uniqueEventNumber=0; // NEED TO UNSCRAMBLE THE EVENT NUMBERS. THERE ARE MULTIPLE EVENTS WITH THE SAME EVENT NUMBER IN THE ROOT TREES. NOT ENTIRELY SURE WHAT THE SOURCE IS. PROBABLY MULTIPLE SIMULATIONS?
     TBranch* UT_equalWeights=ut_dataTree->Branch("UT_equalWeights",&UT_equalWeight,"UT_equalWeights/D");
     TBranch* UT_spectEqualWeights=ut_dataTree->Branch("UT_spectEqualWeights",&UT_spectEqualWeight,"UT_spectEqualWeights/D");
@@ -64,9 +64,9 @@ void addUTWeightsBranch(string rootFileLoc, string rootFileName, string treeName
     //nentries=50;
     std::vector<double> pValuesInEvent;
     std::vector<double> chiSqsInEvent;
-    std::vector<string> spectroscopicIDVector;
-    std::vector<Int_t> beamIDs;
-    std::vector<double> Mpi0etas;
+    //std::vector<string> spectroscopicIDVector;
+    //std::vector<Int_t> beamIDs;
+    //std::vector<double> Mpi0etas;
     double pValue;
     vector<double> pValueNormalizations;
     double pValueNormalization;
@@ -81,12 +81,12 @@ void addUTWeightsBranch(string rootFileLoc, string rootFileName, string treeName
     cout << "nentries: " << nentries << endl;
     double countedEntries=0; 
     map<int,int> alreadySeenBeamID; // grouping into combos with the same beamID, i.e. spectroscopicID vary, and look for the best chiSq
-    set<string> alreadySeenSpectCombo; // counting how many spectroscopicID there are
+    //set<string> alreadySeenSpectCombo; // counting how many spectroscopicID there are
     for(Long64_t ientry=0; ientry<nentries; ientry++)
     {
     	dataTree->GetEntry(ientry);
-        beamEnergy=beam_p4_meas->E();
-        if(verbose)cout << "(previousEvent "<< previousEvent << ")currentEvent " << event << " EBeam " << beamEnergy << " BeamID " << beamID << " spectroscopicID " << spectroscopicID << " chiSq " << chiSq <<  endl;
+        //beamEnergy=beam_p4_meas->E();
+        if(verbose)cout << "(previousEvent "<< previousEvent << ")currentEvent " << event  << " BeamID " << beamID << " chiSq " << chiSq <<  endl;
         if (ientry==0) previousEvent=event; // have to make a special case for just the first event to get the right initialization
         if (previousEvent==event){
             cout << "-previousEvent same as currentEvent... Filling" << endl;
@@ -94,10 +94,10 @@ void addUTWeightsBranch(string rootFileLoc, string rootFileName, string treeName
 
             // --------------------
             // Make a string to hold the spectroscopic (photon) ids so we can do some checks
-            spectroscopicID="";
-            for (int iSpect=0; iSpect<numSpect; ++iSpect){
-                spectroscopicID+=to_string(spectroscopicIDs[iSpect]);
-            }
+            //spectroscopicID="";
+            //for (int iSpect=0; iSpect<numSpect; ++iSpect){
+            //    spectroscopicID+=to_string(spectroscopicIDs[iSpect]);
+            //}
 
             // --------------------
             // Each beam photon has its own indexer that holds the index of the best chiSq
@@ -117,10 +117,10 @@ void addUTWeightsBranch(string rootFileLoc, string rootFileName, string treeName
             }
             
             // Need to create vectors to hold the informaton for the event. Once we see a new event we will begin filling the branches with these vectors
-            Mpi0etas.push_back(Mpi0eta);
-            spectroscopicIDVector.push_back(spectroscopicID);
+            //Mpi0etas.push_back(Mpi0eta);
+            //spectroscopicIDVector.push_back(spectroscopicID);
             beamIDs.push_back(beamID);
-            beamEnergies.push_back(beamEnergy);
+            //beamEnergies.push_back(beamEnergy);
             chiSqsInEvent.push_back(chiSq); // keeping the chiSq for debugging
             pValue=TMath::Prob(chiSq,DOF);
             pValuesInEvent.push_back(pValue);  
@@ -171,12 +171,13 @@ void addUTWeightsBranch(string rootFileLoc, string rootFileName, string treeName
                     UT_uniqueEventNumbers->Fill();
                     ++countedEntries;
                     if (verbose) {
-                        cout << "event " << previousEvent << " | Mpi0eta " << Mpi0etas[iCount] << " | beamEnergy " << beamEnergies[iCount] <<
-                            " | beamID " << beamIDs[iCount] <<  " | spectroscopicID " << spectroscopicIDVector[iCount] << 
+                        cout << "event " << previousEvent << 
+                            " | beamID " << beamIDs[iCount] <<  
                             " | chiSq " << chiSqsInEvent[iCount] << " | pValue " << pValuesInEvent[iCount] <<
                             " | equalWeight " << UT_equalWeight << " | bestChiSqWeight " << UT_bestChiWeight << " | probWeight " << UT_probWeight << 
                             " | spectEqualWeight " << UT_spectEqualWeight << " | spectBestChiSqWeight " << UT_spectBestChiWeight << 
                             " | spectProbWeight " << UT_spectProbWeight <<
+                            //" | spectroscopicID " << spectroscopicIDVector[iCount] << " | Mpi0eta " << Mpi0etas[iCount] << " | beamEnergy " << beamEnergies[iCount] <<
                             " | uniqueEventNumber " << UT_uniqueEventNumber << endl;
                     }
                 }
@@ -215,14 +216,14 @@ void addUTWeightsBranch(string rootFileLoc, string rootFileName, string treeName
                 bestChiSq=DBL_MAX; 
                 pValuesInEvent.clear();
                 chiSqsInEvent.clear();
-                spectroscopicIDVector.clear();
+                //spectroscopicIDVector.clear();
                 beamIDs.clear();
-                Mpi0etas.clear();
+                //Mpi0etas.clear();
                 idx_bestChiSqs.clear();
                 bestChiSqs.clear();
                 spectCounts.clear();
                 pValueNormalizations.clear();
-                beamEnergies.clear();
+                //beamEnergies.clear();
 
                 // ---------------
                 // Since we are at a new event we have to save the pValues and chiSqs or else we would have skipped them
@@ -231,22 +232,22 @@ void addUTWeightsBranch(string rootFileLoc, string rootFileName, string treeName
                 chiSqsInEvent.push_back(chiSq);
                 
                 // Need to set spectroscopicID for this new event
-                spectroscopicID="";
+                //spectroscopicID="";
                 beamCount=0;
                 alreadySeenBeamID.clear();
-                alreadySeenSpectCombo.clear();
-                for (int iSpect=0; iSpect<numSpect; ++iSpect){
-                    spectroscopicID+=to_string(spectroscopicIDs[iSpect]);
-                }
-                spectroscopicIDVector.push_back(spectroscopicID);
+                //alreadySeenSpectCombo.clear();
+                //for (int iSpect=0; iSpect<numSpect; ++iSpect){
+                //    spectroscopicID+=to_string(spectroscopicIDs[iSpect]);
+                //}
+                //spectroscopicIDVector.push_back(spectroscopicID);
                 beamIDs.push_back(beamID);
-                Mpi0etas.push_back(Mpi0eta);
-                beamEnergy=beam_p4_meas->E();
-                beamEnergies.push_back(beamEnergy);
+                //Mpi0etas.push_back(Mpi0eta);
+                //beamEnergy=beam_p4_meas->E();
+                //beamEnergies.push_back(beamEnergy);
 
                 // Need to set the new bestChiSq and its index into the combos array
                 alreadySeenBeamID.insert(make_pair(beamID,beamCount));
-                alreadySeenSpectCombo.insert(spectroscopicID);
+                //alreadySeenSpectCombo.insert(spectroscopicID);
                 spectCounts.push_back(1);
                 ++beamCount;
                 bestChiSq=chiSq;
@@ -279,12 +280,13 @@ void addUTWeightsBranch(string rootFileLoc, string rootFileName, string treeName
             UT_spectProbWeights->Fill();
             UT_uniqueEventNumbers->Fill();
             if (verbose) {
-                cout << "(LastEventIsNew) event " << event << " | Mpi0eta " << Mpi0eta << " | beamEnergy " << beamEnergy << 
-                    " | beamID " << beamID <<  " | spectroscopicID " << spectroscopicID << 
+                cout << "(LastEventIsNew) event " << event << 
+                    " | beamID " << beamID <<  
                     " | chiSq " << chiSq << " | pValue " << pValue <<
                     " | equalWeight 1 | bestChiSqWeight 1 | probWeight 1" << 
                     " | spectEqualWeight 1 | spectBestChiSqWeight 1" << 
                     " | spectProbWeight 1" <<
+                    //" | Mpi0eta " << Mpi0eta << " | beamEnergy " << beamEnergy << " | spectroscopicID " << spectroscopicID << 
                     " | uniqueEventNumber " << UT_uniqueEventNumber << endl;
             }
         }
