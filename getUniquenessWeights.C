@@ -17,22 +17,22 @@ void addUTWeightsBranch(string rootFileLoc, string rootFileName, string treeName
     ULong64_t event;
     double chiSq;
     double DOF;
-    Int_t numSpect;
-    Int_t spectroscopicIDs[20]; // easy way to store as much final state particle IDs we care about. 
+    //Int_t numSpect;
+    //Int_t spectroscopicIDs[20]; // easy way to store as much final state particle IDs we care about. 
     Int_t beamID;
-    double Mpi0eta;
-    TLorentzVector* beam_p4_meas=NULL;
-    double beamEnergy;
-    vector<double> beamEnergies;
+    //double Mpi0eta;
+    //TLorentzVector* beam_p4_meas=NULL;
+    //double beamEnergy;
+    //vector<double> beamEnergies;
     // We will basically count the number of combos that have the same eventNumber.
     dataTree->SetBranchAddress("event",&event);
     dataTree->SetBranchAddress("chiSq",&chiSq);
     dataTree->SetBranchAddress("DOFKinFit",&DOF);
-    dataTree->SetBranchAddress("numSpect",&numSpect);
-    dataTree->SetBranchAddress("spectroscopicID",&spectroscopicIDs);
+    //dataTree->SetBranchAddress("numSpect",&numSpect);
+    //dataTree->SetBranchAddress("spectroscopicID",&spectroscopicIDs);
     dataTree->SetBranchAddress("beamID",&beamID);
-    dataTree->SetBranchAddress("Mpi0eta",&Mpi0eta);
-    dataTree->SetBranchAddress("beam_p4_meas",&beam_p4_meas);
+    //dataTree->SetBranchAddress("Mpi0eta",&Mpi0eta);
+    //dataTree->SetBranchAddress("beam_p4_meas",&beam_p4_meas);
 
     // clone the tree and add two new branches
     TFile *ut_dataFile = TFile::Open((rootFileLoc+rootFileName+"_UTweights.root").c_str(),"RECREATE"); 
